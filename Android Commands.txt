@@ -1,0 +1,136 @@
+🔐 Intercepting Android Traffic with Burp Suite: A Step-by-Step Easy Guide
+
+🛠️ Requirements:
+ 1. Burp Suite CACERT in .der format.
+ 2. Rooted Android Device (Emulator).
+ 3. ADB Drivers
+
+🔍 Steps on Linux: [I]
+ 1. Copy cacert.der to Linux OS.
+ 2. Open Terminal and navigate to cacert.der location
+ 2.1 openssl x509 --inform DER --in cacert.der --out Burp.pem
+ 2.2 openssl x509 --in Burp.pem --subject_hash_old
+ Example Output:-
+ 9a5ba575
+ -----BEGIN CERTIFICATE-----
+ Base64-encoded X.509 certificate
+ -----END CERTIFICATE-----
+
+ 3. Copy the generated hash value.
+ 4. Duplicate Burp.pem file
+ cp Burp.pem [hashValue].0 (with .0 extension)
+ [Example :- cp Burp.pem 9a5ba575.0 (with .0 extension) ]
+ 5. Move [hashValue].0 (file) to Windows OS or keep in Linux OS. (Whichever OS you are using for Android Penetration Testing.)
+
+🚀 Steps on Windows/Linux: [II]
+ 1. Open terminal where [hashValue].0 is located.
+ 2. Paste cacert in system certificates.adb shell
+ 2.1 su
+ 2.2 mount -o rw,remount /
+ 2.3 exit
+ 2.4 exit
+ 2.5 adb push [hashValue].0 /system/etc/security/cacerts/
+ [Example :- adb push 9a5ba575.0 /system/etc/security/cacerts/]
+
+Download
+
+https://www.qemu.org/download/#windows
+https://www.msys2.org/
+
+>pacman -S mingw-w64-ucrt-x86_64-qemu
+>pacman -S mingw-w64-ucrt-x86_64-gcc
+
+also run .bat script run as administrator
+
+
+
+
+
+🔄 Toggle Proxy Installation:
+ 1. Download Proxy Toggle from GitHub: Proxy Toggle
+ 2. Install the APK on your Android device.
+ 3. Grant necessary permissions via ADB:
+ 3.1 pm grant com.kinandcarta.create.proxytoggle android.permission.WRITE_SECURE_SETTINGS
+
+
+🔒 Secure Your Traffic:
+Empower your Android testing by intercepting and analyzing traffic with Burp Suite. Follow these detailed steps to ensure a smooth setup and secure your findings.
+
+👨‍💻 Stay Secure, Stay Informed!
+Explore the dynamic world of cybersecurity and enhance your testing capabilities with Burp Suite. Let's make the digital landscape safer together! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++++++ IP TABLES +++++
+
+	To Intercept Commands
+
+		iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination 192.168.100.7:8080
+		iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination 192.168.100.7:8080
+		iptables -t nat -L
+
+
+	To Remove Commands
+		iptables -t nat -D OUTPUT -p tcp --dport 80 -j DNAT --to-destination 192.168.1.6:8080
+		iptables -t nat -D OUTPUT -p tcp --dport 443 -j DNAT --to-destination 192.168.1.6:8080
+		iptables -t nat -L 
+		
++++++ MobSF (Installation) +++++
+
+	docker pull opensecurity/mobile-security-framework-mobsf:latest
+
++++++ MobSF (Static) +++++
+
+	docker run -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+	
++++++ MobSF (Dynamic) +++++
+
+	Android - docker run -it --rm -p 8000:8000 -p 1337:1337 -e MOBSF_ANALYZER_IDENTIFIER=192.168.56.107:5555 opensecurity/mobile-security-framework-mobsf:latest
+	iOS - docker run -it --rm -p 8000:8000 -p 1337:1337 -e MOBSF_CORELLIUM_API_KEY=<corellium api key> opensecurity/mobile-security-framework-mobsf:latest
+	
++++++ Drozer +++++
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+I know you guys use MobSF and JadX for Static Analysis and recon, but here is a good way to utilize Nuclei to help reduce the workload.
+
+PoC Steps:
+
+1- Download the "your-app.apk" file.
+
+2- Use command "apktool d your-app.apk" to decompile the apk file.
+
+3- Then search on Google or Github for "optiv/mobile-nuclei-templates" and clone that github repo.
+
+4- After that use the commands below:
+
+echo yuor-app | nuclei -t mobile-nuclei-templates/Keys 
+
+echo your-app | nuclei -t mobile-nuclei-templates/Android
+
+The above "your-app" is the decompiled folder and the "Keys" and "Android" are the folders containing our ".yaml" templates for scanning.
+
+After discovering Webview you can try so many attacks like XSS, Webview Hijacking, file theft, token stealing etc.
+
+
+
+
+## APKLeak Tool
+> apkleak -f /path/ -o result.txt
+
