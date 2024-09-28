@@ -1,0 +1,65 @@
+### NMAP
+### Nessus
+### msf/dork/other
+
+
+
+
+# How we define Target on NMAP sanneing
+> Single IP              nmap <ip>
+> subnet rang/CIDR       namp  <ip>/8  
+> ip Range               nmap <ip>-8
+> specific IPs           nmap <ip> <ip>
+> Text file              nmap -iL host.txt
+> Domain                 nmap alfa.com
+
+# How we Define port on Nmap scanning
+> single port           nmap <ip> -p80
+> seq. port             nmap <ip> -p20-30
+> Distributed only      nmap <ip> -p8, 22, 24
+> Service Specific      nmap <ip> -p http         (it will scan only http port like:80,800)
+> protocol specific     nmap <ip> -p T:22,U:53    (T:tcp, U:udp  port scanning)
+> all port scanning     nmap <ip> -p-             ( all 65535 ports)
+
+
+
+
+## nmap  <ip> --top-port 100
+
+
+
+
+# Firewall and IDS Evasion Technique
+
+> nmap -Pn <target>
+> nmap --randomize-hosts <target>
+> nmap -f <target>
+> nmap -sX <target>
+
+
+
+
+
+
+
+## Using Commnads:-
+
+$$ nmap -sV <ip>                                          
+$$ nmap -p 22 --script=vuln 192.168.1.1                 
+$$ nmap -sV -A -T4 <ip>                                      
+
+$$ nmap -p- <ip> -Pn 
+
+
+## Step-by-Step Process to Use Metasploit for Exploiting a Vulnerable Service:
+
+> msfconsole
+> search <service_name> <version> or <CVE>
+> search vsftpd 2.3.4
+> show options
+> set RHOST <target_ip>
+> set RHOST 192.168.1.10
+> set RPORT 21
+> show payloads
+> exploit
+

