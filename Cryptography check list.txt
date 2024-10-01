@@ -1,0 +1,68 @@
+
+1. SSL/TLS Protocols, Ciphers, Keys, and Renegotiation
+# Weak protocols must be disabled
+
+ * SSL v2/v3: Should be disabled, as these are outdated.
+ * TLS v1.0/v1.1: Should also be disabled in favor of TLS 1.2 or TLS 1.3.
+# Weak ciphers must be avoided
+
+* MD5: Deprecated due to hash collision vulnerabilities.
+* RC4: Should not be used due to known biases in the cipher.
+# Renegotiation
+
+* If TLS renegotiation is enabled, ensure it is secure (avoid insecure renegotiation).
+
+# Key length
+* RSA keys should be at least 2048 bits (1024 bits is no longer considered secure).
+* Ensure keys are generated with sufficient entropy.
+
+# Additional mitigations
+
+* Server should be protected from attacks like BEAST, CRIME, BREACH, POODLE, and Heartbleed.
+
+=> Testing commands:
+
+# SSL service recognition with Nmap
+nmap -sV --reason -Pn -n --top-ports 100 <domain>
+nmap --script ssl-cert,ssl-enum-ciphers -p 80,443 <domain>
+nmap -sV --version-light -Pn --script ssl-poodle -p 25,465,587,443 -iL <subdomain>
+
+# Test SSL/TLS with OpenSSL
+openssl s_client -connect <domain>:<port>
+
+# For Renegotiation: (write this command and use head command fo renogitiaon )
+openssl s_client -connect <domain>:<port>
+HEAD / HTTP/1.1
+R
+
+2. Certificate Validity
+* Check for expired or self-signed certificates.
+* Ensure the certificate matches the domain name.
+* Verify certificate chain and revocation (CRL, OCSP).
+
+3. Software Updates
+* Ensure the server software (e.g., OpenSSL, web server) is up-to-date to prevent known vulnerabilities.
+
+4. Secure Cookies
+* Use the Secure and HttpOnly flags for cookies to prevent attacks like session hijacking.
+
+5. HTTP Strict Transport Security (HSTS)
+* HSTS should be enabled to force clients to use HTTPS and avoid downgrade attacks.
+
+6. Mixed Content
+* Ensure there is no mixed content (HTTP elements on an HTTPS page) to avoid security risks like man-in-the-middle attacks.
+
+7. Sensitive Data Transmitted in Clear Text
+* Verify that sensitive data such as passwords or PII are not transmitted via HTTP or unencrypted protocols.
+
+8. Forward Secrecy
+* Ensure that perfect forward secrecy is supported by checking for strong ephemeral ciphers (e.g., ECDHE).
+
+9. TLS Downgrade Protection
+* Test for TLS downgrade attacks (e.g., Logjam or DROWN attack).
+
+=> Additional Commands:
+Test for HSTS:
+curl -I https://<domain> | grep "strict-transport-security"
+
+Test for Mixed Content: Use developer tools in browsers or automated tools like SSL Labs or Mixed Content Scanner.
