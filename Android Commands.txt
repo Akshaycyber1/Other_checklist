@@ -1,7 +1,8 @@
 🔐 Intercepting Android Traffic with Burp Suite: A Step-by-Step Easy Guide
+ #>> Set proxy setting with your system IP and port
 
 🛠️ Requirements:
- 1. Burp Suite CACERT in .der format.
+ 1. Burp Suite CACERT in .der format. (export cert from bursuite)
  2. Rooted Android Device (Emulator).
  3. ADB Drivers
 
@@ -51,7 +52,7 @@ also run .bat script run as administrator
  2. Install the APK on your Android device.
  3. Grant necessary permissions via ADB:
  3.1 pm grant com.kinandcarta.create.proxytoggle android.permission.WRITE_SECURE_SETTINGS
-
+  #>> set your system ip and port and set same on burpsuite
 
 🔒 Secure Your Traffic:
 Empower your Android testing by intercepting and analyzing traffic with Burp Suite. Follow these detailed steps to ensure a smooth setup and secure your findings.
