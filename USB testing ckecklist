@@ -1,0 +1,153 @@
+# USB Hardware Testing Checklist
+
+## 🔹 General USB Identification
+
+👉 **Use RegShot to monitor registry changes**
+
+### ⭐ Identify USB Devices Connected to Your System
+
+#### **On Linux:**
+```bash
+lsusb
+lsusb -v
+```
+#### **On Windows:**
+- Open **Device Manager** (`devmgmt.msc`).
+- Expand **Universal Serial Bus controllers**.
+
+---
+
+## 🔹 USB Sniffing and Debugging
+
+### ⭐ Tools for USB Traffic Analysis
+- **Wireshark** – Captures and analyzes USB traffic.
+- **USBPcap** – Enables Wireshark to capture USB packets.
+- **USBlyzer** – Windows-based USB monitoring tool.
+
+---
+
+## 🔹 Check USB Registry Entries (Windows)
+
+#### **Open Registry Editor:**
+1. Press `Win + R`, type `regedit`, and press Enter.
+2. Navigate to:
+   ```
+   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\USB\
+   ```
+3. **Check USB Storage Status:**
+   ```
+   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR
+   ```
+   - If `Start` is set to **4**, USB storage is **disabled**.
+
+4. **Check USB History:**
+   ```
+   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\USBSTOR
+   ```
+   - Lists previously connected USB devices.
+
+5. **Check HID (Human Interface Devices):**
+   ```
+   HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\HID
+   ```
+   - May reveal suspicious devices acting as keyboards/mice.
+
+---
+
+## 🔹 Check USB Mount Location
+
+### **On Windows:**
+#### **Using Disk Management:**
+1. Press `Win + R`, type `diskmgmt.msc`, and press Enter.
+2. Find the USB drive and note the **drive letter**.
+
+#### **Using Command Prompt (CMD):**
+```powershell
+wmic logicaldisk get caption, description, filesystem, volumename
+```
+
+### **On Linux:**
+```bash
+lsblk
+df -h
+```
+
+---
+
+## 🔹 Check USB Device in Device Manager (Windows)
+1. Open **Device Manager** (`Win + X → Device Manager`).
+2. Expand **Disk Drives** and **Universal Serial Bus controllers**.
+3. Right-click the USB device → **Properties**.
+4. **Check driver info** and **hardware details**.
+
+---
+
+## 🔹 Check USB VID & PID
+1. Open **Device Manager** → Right-click USB device → **Properties**.
+2. Go to **Details tab** → Select **Hardware IDs**.
+3. Find:
+   - **VID (Vendor ID)**
+   - **PID (Product ID)**
+4. Search VID & PID online to identify the device.
+
+---
+
+## 🔹 Check USB in Devices and Printers (Windows)
+1. Open **Control Panel → Devices and Printers**.
+2. Find the USB device and right-click → **Properties**.
+3. Check if the **device type matches** what it should be.
+
+---
+
+## 🔹 USB Analysis using USBDeview
+1. Download **USBDeview**.
+2. Run as Administrator.
+3. Check:
+   - Device name
+   - Serial number
+   - VID & PID
+   - Power consumption
+
+---
+
+## 🔹 Check USB Power Consumption
+
+#### **On Windows:**
+```powershell
+powercfg /batteryreport
+```
+
+#### **Using PowerShell:**
+```powershell
+Get-WmiObject -Query "Select * From Win32_USBControllerDevice"
+```
+
+#### **On Linux:**
+```bash
+cat /sys/bus/usb/devices/usb*/power/
+```
+
+---
+
+## 🔹 USB Performance Test (Read/Write Speed)
+1. Download **CrystalDiskMark**.
+2. Select the USB drive and start the test.
+3. Check read/write speeds.
+
+---
+
+## 🔹 USB Forensic Analysis
+
+**Tools:**
+- **USBDetective** (paid & free versions) – Checks past USB connections.
+- **USB Historian** – Extracts historical USB data.
+- **USBLogView** – Monitors USB plug/unplug events.
+
+### **Steps:**
+1. Download **USBDetective**.
+2. Run it to analyze past USB device connections.
+3. Review logs for suspicious activity.
+
+---
+
+✅ **Best Practice:** Always cross-check **Device Manager, Registry, and Devices & Printers** to spot fake or malicious USB devices! 🚀
