@@ -122,13 +122,18 @@ PoC Steps:
 4- After that use the commands below:
 
 echo yuor-app | nuclei -t mobile-nuclei-templates/Keys 
-
 echo your-app | nuclei -t mobile-nuclei-templates/Android
-
 The above "your-app" is the decompiled folder and the "Keys" and "Android" are the folders containing our ".yaml" templates for scanning.
-
 After discovering Webview you can try so many attacks like XSS, Webview Hijacking, file theft, token stealing etc.
 
+
+
+## Finding the Firebase URL:
+Go to AndroidManifest.xml and search for "firebase."
+Then, go to resources.arsc → res → values → strings.xml and search for the Firebase URL.
+If you find a URL, check it in a browser:
+If it shows "null", it is possible to write data to the Firebase database.
+If it shows a "Permission Denied" message, writing to the database is not possible.
 
 
 
