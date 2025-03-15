@@ -135,8 +135,12 @@ If you find a URL, check it in a browser:
 If it shows "null", it is possible to write data to the Firebase database.
 If it shows a "Permission Denied" message, writing to the database is not possible.
 
-StaCoAn tool for static analysis  
+## StaCoAn tool for static analysis  
 
 ## APKLeak Tool
 > apkleak -f /path/ -o result.txt
+
+## apk2url
+./apk2url.sh /path/to/apk-directory/
+
 
