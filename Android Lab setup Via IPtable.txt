@@ -45,7 +45,7 @@ also run .bat script run as administrator
 
 
 
-
+set "PATH=C:\adb;%PATH%"
 
 🔄 Toggle Proxy Installation:
  1. Download Proxy Toggle from GitHub: Proxy Toggle
